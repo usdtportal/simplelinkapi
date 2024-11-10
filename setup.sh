@@ -11,29 +11,10 @@ for dep in "${dependencies[@]}"; do
     fi
 done
 
-# Check for php-devel (php headers)
-if [ ! -f "/usr/include/php/main/php.h" ] && [ ! -f "/usr/local/include/php/main/php.h" ]; then
-    echo "Error: php-devel (php.h) is not found."
-    missing_dependencies=$((missing_dependencies + 1))
-fi
+# Pominięto sprawdzanie obecności php-devel, openssl-devel i PHP-CPP
 
-# Check for openssl-devel (openssl headers)
-if [ ! -f "/usr/include/openssl/ssl.h" ] && [ ! -f "/usr/local/include/openssl/ssl.h" ]; then
-    echo "Error: openssl-devel (ssl.h) is not found."
-    missing_dependencies=$((missing_dependencies + 1))
-fi
-
-# Check if PHP-CPP library is installed
-phpcpp_installed=0
-if [ -f "/usr/local/lib/libphpcpp.a" ] || [ -f "/usr/lib64/libphpcpp.a" ] || [ -f "/usr/local/lib/libphpcpp.so" ] || [ -f "/usr/lib64/libphpcpp.so" ]; then
-    echo "PHP-CPP is installed."
-else
-    echo "Error: PHP-CPP library is not found. Please install PHP-CPP and try again."
-    phpcpp_installed=1
-fi
-
-# If any dependencies or PHP-CPP are missing, exit
-if [ "$missing_dependencies" -ne 0 ] || [ "$phpcpp_installed" -ne 0 ]; then
+# If any command-line dependencies are missing, exit
+if [ "$missing_dependencies" -ne 0 ]; then
     echo "Please install the missing dependencies and try again."
     exit 1
 else
