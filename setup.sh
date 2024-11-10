@@ -2,9 +2,6 @@
 
 # Check if required dependencies are installed
 dependencies=("g++" "curl" "php" "php-config")
-rpm_dependencies=("php-devel" "openssl-devel")
-dpkg_dependencies=("php-dev" "libssl-dev")
-
 echo "Checking for required command-line tools..."
 missing_dependencies=0
 for dep in "${dependencies[@]}"; do
@@ -14,31 +11,21 @@ for dep in "${dependencies[@]}"; do
     fi
 done
 
-# Check for additional libraries depending on package manager
-if command -v yum &> /dev/null; then
-    echo "Checking for required libraries using yum..."
-    for dep in "${rpm_dependencies[@]}"; do
-        if ! rpm -q "$dep" &> /dev/null; then
-            echo "Error: $dep is not installed."
-            missing_dependencies=$((missing_dependencies + 1))
-        fi
-    done
-elif command -v apt &> /dev/null; then
-    echo "Checking for required libraries using apt..."
-    for dep in "${dpkg_dependencies[@]}"; do
-        if ! dpkg -s "$dep" &> /dev/null; then
-            echo "Error: $dep is not installed."
-            missing_dependencies=$((missing_dependencies + 1))
-        fi
-    done
-else
-    echo "Error: Unsupported package manager. Please install dependencies manually."
-    exit 1
+# Check for php-devel (php headers)
+if [ ! -f "/usr/include/php/main/php.h" ] && [ ! -f "/usr/local/include/php/main/php.h" ]; then
+    echo "Error: php-devel (php.h) is not found."
+    missing_dependencies=$((missing_dependencies + 1))
 fi
 
-# Check if PHP-CPP is installed
+# Check for openssl-devel (openssl headers)
+if [ ! -f "/usr/include/openssl/ssl.h" ] && [ ! -f "/usr/local/include/openssl/ssl.h" ]; then
+    echo "Error: openssl-devel (ssl.h) is not found."
+    missing_dependencies=$((missing_dependencies + 1))
+fi
+
+# Check if PHP-CPP library is installed
 phpcpp_installed=0
-if [ -f "/usr/local/lib/libphpcpp.a" ] || [ -f "/usr/local/lib/libphpcpp.so" ] || [ -f "/usr/lib64/libphpcpp.a" ] || [ -f "/usr/lib64/libphpcpp.so" ]; then
+if [ -f "/usr/local/lib/libphpcpp.a" ] || [ -f "/usr/lib64/libphpcpp.a" ] || [ -f "/usr/local/lib/libphpcpp.so" ] || [ -f "/usr/lib64/libphpcpp.so" ]; then
     echo "PHP-CPP is installed."
 else
     echo "Error: PHP-CPP library is not found. Please install PHP-CPP and try again."
