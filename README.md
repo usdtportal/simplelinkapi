@@ -23,7 +23,7 @@ If any of these packages are missing, follow the installation steps for your spe
 
 2. **Install Required Packages**
    ```bash
-   sudo yum install -y g++ curl php php-devel openssl-devel
+   sudo dnf install -y g++ curl php php-devel openssl-devel git
    ```
 
 3. **Install PHP-CPP Library**
@@ -73,7 +73,7 @@ If any of these packages are missing, follow the installation steps for your spe
 
 2. **Install Required Packages**
    ```bash
-   sudo yum install -y g++ curl php php-devel openssl-devel
+   sudo yum install -y g++ curl php php-devel openssl-devel git
    ```
 
 3. **Install PHP-CPP Library**
@@ -124,7 +124,7 @@ If any of these packages are missing, follow the installation steps for your spe
 2. **Install Required Packages**
    ```bash
    sudo apt update
-   sudo apt install -y g++ curl php php-dev openssl libssl-dev
+   sudo apt install -y g++ curl php php-dev openssl libssl-dev git
    ```
 
 3. **Install PHP-CPP Library**
